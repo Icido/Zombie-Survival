@@ -7,10 +7,7 @@ public class WaveManagement : MonoBehaviour {
     [SerializeField]
     private int waveNumber = 0;
 
-    [SerializeField]
     private List<GameObject> SmartZombies = new List<GameObject>();
-
-    [SerializeField]
     private List<GameObject> RegularZombies = new List<GameObject>();
 
     [SerializeField]
@@ -23,7 +20,7 @@ public class WaveManagement : MonoBehaviour {
 
     public GameObject SmartZombie;
 
-    public bool allDead = true;
+    private bool allDead = true;
 
     private bool finishedSZombieSpawning = false;
     private bool finishedRZombieSpawning = false;

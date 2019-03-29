@@ -7,6 +7,7 @@ public class GeneticAlgorithm {
     public List<Genomes> genomes = new List<Genomes>();
     public List<Genomes> lastGenerationGenomes = new List<Genomes>();
     public List<int> bestZombie = new List<int>();
+    public List<Genomes> currentBestZombies = new List<Genomes>();
 
     public int populationSize = 100; //100
     public double crossoverRate = 0.7f; //0.7f
@@ -30,7 +31,7 @@ public class GeneticAlgorithm {
     public void createStartPopulation()
     {
         genomes.Clear();
-
+        
         for (int i = 0; i < populationSize; i++)
         {
             Genomes child = new Genomes(chromosoneLength);
@@ -94,6 +95,8 @@ public class GeneticAlgorithm {
 
             }
         }
+
+        currentBestZombies.Add(genomes[fittestGenome]);
     }
 
     public List<int> decode(List<int> bits)
@@ -193,7 +196,7 @@ public class GeneticAlgorithm {
         busy = true;
 
         //Debug.Log("New Generation: " + generation + ", Pop size: " + populationSize);
-        
+
         updateFitnessScores();
 
         if (!hasFoundPerfection)
