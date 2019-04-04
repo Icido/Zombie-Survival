@@ -108,7 +108,38 @@ public class WaveManagement : MonoBehaviour {
         {
             for (int i = 0; i < numberOfEnemies; i++)
             {
-                SmartZombies.Add(Instantiate(SmartZombie, spawnLocations.GetChild(Random.Range(0, spawnLocations.childCount)).position, Quaternion.identity, enemyContainer));
+
+                //Add zombie
+                GameObject newZombie = Instantiate(SmartZombie, spawnLocations.GetChild(Random.Range(0, spawnLocations.childCount)).position, Quaternion.identity, enemyContainer);
+
+                //Request generation data
+                newZombie.GetComponent<EnemyHealth>().startingHealth = gaC.SortedZombies[i].attributes.health;
+                newZombie.GetComponent<EnemyHealth>().currentHealth = gaC.SortedZombies[i].attributes.health;
+
+                newZombie.GetComponent<EnemyMovement>().speed = gaC.SortedZombies[i].attributes.speed;
+
+                if(gaC.SortedZombies[i].useMelee)
+                {
+                    //modify attack speed, damage and collider range for MELEE
+                    newZombie.GetComponent<EnemyAttack>().attackDamage = gaC.SortedZombies[i].attributes.meleeStrength;
+                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = gaC.SortedZombies[i].attributes.meleeSpeed;
+                    newZombie.GetComponent<EnemyAttack>().range = gaC.SortedZombies[i].attributes.meleeRange;
+                }
+                else
+                {
+                    //modify attack speed, damage and collider range for RANGE
+                    newZombie.GetComponent<EnemyAttack>().attackDamage = gaC.SortedZombies[i].attributes.rangeStrength;
+                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = gaC.SortedZombies[i].attributes.rangeSpeed;
+                    newZombie.GetComponent<EnemyAttack>().range = gaC.SortedZombies[i].attributes.rangeRange;
+                }
+
+                //TODO: Put in "leadershipStr/Rng" for flocking and basic zombie decision making
+
+
+
+                //Modify this zombie with generation data
+
+                SmartZombies.Add(newZombie);
 
                 yield return new WaitForSeconds(5);
             }

@@ -7,7 +7,7 @@ public class GeneticAlgorithm {
     public List<Genomes> genomes = new List<Genomes>();
     public List<Genomes> lastGenerationGenomes = new List<Genomes>();
     public List<int> bestZombie = new List<int>();
-    public List<Genomes> currentBestZombies = new List<Genomes>();
+    public List<SmartZombie> currentBestZombies = new List<SmartZombie>();
 
     public int populationSize = 100; //100
     public double crossoverRate = 0.7f; //0.7f
@@ -50,9 +50,9 @@ public class GeneticAlgorithm {
             //Converts the genes of this individual into a list of attribute values
             List<int> attributeValues = decode(genomes[i].bits);
 
-            SmartZombie zombie = new SmartZombie();
-
-            genomes[i].fitness = zombie.zombieTest(attributeValues);
+            SmartZombie zombie = new SmartZombie(attributeValues);
+            
+            genomes[i].fitness = zombie.zombieTest();
 
             totalFitnessScore += genomes[i].fitness;
 
@@ -96,7 +96,9 @@ public class GeneticAlgorithm {
             }
         }
 
-        currentBestZombies.Add(genomes[fittestGenome]);
+        SmartZombie newZombie = new SmartZombie(decode(genomes[fittestGenome].bits));
+
+        currentBestZombies.Add(newZombie);
     }
 
     public List<int> decode(List<int> bits)

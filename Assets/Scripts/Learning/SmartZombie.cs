@@ -4,6 +4,26 @@ using UnityEngine;
 
 public class SmartZombie {
 
+    public SmartZombie(List<int> attributeValues)
+    {
+        //Convert attributeValues into workable "SmartZombie" values
+        inputGenesToZGenes(attributeValues);
+        ZGenesToAttributes(zGenes);
+
+        if((attributes.meleeStrength * attributes.meleeSpeed) < (attributes.rangeStrength * attributes.rangeSpeed))
+        {
+            useMelee = false;
+        }
+        else
+        {
+            useMelee = true;
+        }
+    }
+
+    public bool useMelee = true;
+
+    public double fitness = 0;
+
     private const float maxGeneValue = 255f;
 
     public struct ZombieAttributes
@@ -23,7 +43,7 @@ public class SmartZombie {
         public float leadershipRange; //How close the zombies can be before they're influenced by this zombie
     }
 
-    private ZombieAttributes attributes;
+    public ZombieAttributes attributes;
 
     public struct ZombieGenes
     {
@@ -108,13 +128,9 @@ public class SmartZombie {
     private float zombieMeleeDamagePerSecond;
     private float zombieRangeDamagePerSecond;
 
-    public double zombieTest(List<int> attributeValues)
+    public double zombieTest()
     {
         double newFitness = 0;
-
-        //Convert attributeValues into workable "SmartZombie" values
-        inputGenesToZGenes(attributeValues);
-        ZGenesToAttributes(zGenes);
 
         //Calculate how much damage per second from the converted values
         zombieMeleeDamagePerSecond = attributes.meleeStrength * attributes.meleeSpeed; //Highest current possible mDPS: 30
@@ -197,7 +213,9 @@ public class SmartZombie {
             newFitness = percentageDamageToPlayer;
         }
 
-        return newFitness;
+        fitness = newFitness;
+
+        return fitness;
 
     }
 

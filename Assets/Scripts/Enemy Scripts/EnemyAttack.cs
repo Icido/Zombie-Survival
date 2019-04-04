@@ -5,7 +5,8 @@ using UnityEngine;
 public class EnemyAttack : MonoBehaviour {
 
     public float timeBetweenAttacks = 0.5f;
-    public int attackDamage = 10;
+    public float attackDamage = 10;
+    public float range = 0.5f;
 
     GameObject player;
     PlayerHealth playerHealth;
@@ -22,34 +23,19 @@ public class EnemyAttack : MonoBehaviour {
         enemyHealth = GetComponent<EnemyHealth>();
     }
 
-
-    void OnTriggerEnter(Collider other)
-    {
-        // If the entering collider is the player...
-        if (other.gameObject == player)
-        {
-            // ... the player is in range.
-            playerInRange = true;
-        }
-    }
-
-
-    void OnTriggerExit(Collider other)
-    {
-        // If the exiting collider is the player...
-        if (other.gameObject == player)
-        {
-            // ... the player is no longer in range.
-            playerInRange = false;
-        }
-    }
-
-
     void Update()
     {
+        if (Vector3.Distance(player.transform.position, transform.position) <= range)
+        {
+            playerInRange = true;
+        }
+        else
+        {
+            playerInRange = false;
+        }
+
         //TODO: DECISION MAKING
-
-
+        
         // Add the time since Update was last called to the timer.
         timer += Time.deltaTime;
 

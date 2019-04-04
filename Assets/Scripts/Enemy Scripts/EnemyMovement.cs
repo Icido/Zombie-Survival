@@ -7,6 +7,7 @@ public class EnemyMovement : MonoBehaviour {
     Transform player;
     PlayerHealth playerHealth;
     EnemyHealth enemyHealth;
+    public float speed;
 
     void Awake()
     {

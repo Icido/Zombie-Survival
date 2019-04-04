@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour {
 
-    public int startingHealth = 100;
-    public int currentHealth;
+    public float startingHealth = 100f;
+    public float currentHealth;
 
     PlayerMovement playerMovement;
     PlayerShooting playerShooting;
@@ -21,7 +21,7 @@ public class PlayerHealth : MonoBehaviour {
         currentHealth = startingHealth;
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(float amount)
     {
         currentHealth -= amount;
 
