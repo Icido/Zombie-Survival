@@ -18,19 +18,15 @@ public class EnemyHealth : MonoBehaviour {
     {
         wm = GameObject.Find("WaveManager").GetComponent<WaveManagement>();
 
-        // Setting up the references.
         capsuleCollider = GetComponent<CapsuleCollider>();
 
-        // Setting the current health when the enemy first spawns.
         currentHealth = startingHealth;
     }
 
     void Update()
     {
-        // If the enemy should be sinking...
         if (isSinking)
         {
-            // ... move the enemy down by the sinkSpeed per second.
             transform.Translate(-Vector3.up * sinkSpeed * Time.deltaTime);
         }
     }
