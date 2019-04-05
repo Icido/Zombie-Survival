@@ -7,6 +7,7 @@ public class PlayerShooting : MonoBehaviour {
     public int damagePerShot = 20;
     public float timeBetweenBullets = 0.15f;
     public float range = 100f;
+    public float accuracy = 100f;
 
 
     float timer;
