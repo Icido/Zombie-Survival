@@ -23,6 +23,8 @@ public class GAController : MonoBehaviour {
         if (ga.hasFoundPerfection)
         {
             //Output "best zombie" + possible mutations
+            Debug.LogError("It found perfection, somehow...");
+            Debug.Break();
         }
         else
         {

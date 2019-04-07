@@ -25,6 +25,8 @@ public class WaveManagement : MonoBehaviour {
     private bool finishedSZombieSpawning = false;
     private bool finishedRZombieSpawning = false;
 
+    private bool gaFinished = true;
+
     private GAController gaC;
     private GameObject player;
     private PlayerShooting pShooting;
@@ -36,30 +38,31 @@ public class WaveManagement : MonoBehaviour {
         player = GameObject.Find("Player");
         SmartZombies.Clear();
         RegularZombies.Clear();
+
+
+        pShooting = player.GetComponentInChildren<PlayerShooting>();
+        pHealth = player.GetComponent<PlayerHealth>();
+        gaC.multipleGenerationEpoch(pShooting, pHealth);
+
+
     }
 
     // Update is called once per frame
     void Update() {
 
-        //Check if all current spawned enemies are dead (when dead, they remove themself from the list and delete self
-        if (SmartZombies.Count == 0 && RegularZombies.Count == 0 &&
-            finishedSZombieSpawning && finishedRZombieSpawning)
+        if (!gaFinished && finishedSZombieSpawning && finishedRZombieSpawning)
         {
-            allDead = true;
-
-            pShooting = player.GetComponentInChildren<PlayerShooting>();
-            pHealth = player.GetComponent<PlayerHealth>();
-
-
-            gaC.multipleGenerationEpoch(pShooting, pHealth);
-            waveNumber++;
+            StartCoroutine(generationEpoch());
         }
 
-        //If all are dead, instantiate a new wave
-        if (allDead)
+
+        //Check if all current spawned enemies are dead (when dead, they remove themself from the list and delete self
+        if (SmartZombies.Count == 0 && RegularZombies.Count == 0 &&
+            finishedSZombieSpawning && finishedRZombieSpawning && gaFinished)
         {
+            gaFinished = false;
+            waveNumber++;
             newWave(waveNumber);
-            allDead = false;
         }
     }
 
@@ -120,25 +123,29 @@ public class WaveManagement : MonoBehaviour {
                 //Add zombie
                 GameObject newZombie = Instantiate(SmartZombie, spawnLocations.GetChild(Random.Range(0, spawnLocations.childCount)).position, Quaternion.identity, enemyContainer);
 
+                SmartZombie smartZombieCopy = gaC.SortedZombies[0];
+
                 //Request generation data
-                newZombie.GetComponent<EnemyHealth>().startingHealth = gaC.SortedZombies[i].attributes.health;
-                newZombie.GetComponent<EnemyHealth>().currentHealth = gaC.SortedZombies[i].attributes.health;
+                newZombie.GetComponent<EnemyHealth>().startingHealth = smartZombieCopy.attributes.health;
+                newZombie.GetComponent<EnemyHealth>().currentHealth = smartZombieCopy.attributes.health;
 
-                newZombie.GetComponent<EnemyMovement>().speed = gaC.SortedZombies[i].attributes.speed;
+                newZombie.GetComponent<EnemyMovement>().speed = smartZombieCopy.attributes.speed;
 
-                if(gaC.SortedZombies[i].useMelee)
+                newZombie.GetComponent<EnemyAttack>().useMelee = smartZombieCopy.useMelee;
+
+                if (smartZombieCopy.useMelee)
                 {
                     //modify attack speed, damage and collider range for MELEE
-                    newZombie.GetComponent<EnemyAttack>().attackDamage = gaC.SortedZombies[i].attributes.meleeStrength;
-                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = 1 / gaC.SortedZombies[i].attributes.meleeAttackRate;
-                    newZombie.GetComponent<EnemyAttack>().range = gaC.SortedZombies[i].attributes.meleeRange;
+                    newZombie.GetComponent<EnemyAttack>().attackDamage = smartZombieCopy.attributes.meleeStrength;
+                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = 1 / smartZombieCopy.attributes.meleeAttackRate;
+                    newZombie.GetComponent<EnemyAttack>().range = smartZombieCopy.attributes.meleeRange;
                 }
                 else
                 {
                     //modify attack speed, damage and collider range for RANGE
-                    newZombie.GetComponent<EnemyAttack>().attackDamage = gaC.SortedZombies[i].attributes.rangeStrength;
-                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = 1 / gaC.SortedZombies[i].attributes.rangeAttackRate;
-                    newZombie.GetComponent<EnemyAttack>().range = gaC.SortedZombies[i].attributes.rangeRange;
+                    newZombie.GetComponent<EnemyAttack>().attackDamage = smartZombieCopy.attributes.rangeStrength;
+                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = 1 / smartZombieCopy.attributes.rangeAttackRate;
+                    newZombie.GetComponent<EnemyAttack>().range = smartZombieCopy.attributes.rangeRange;
                 }
 
                 //TODO: Put in "leadershipStr/Rng" for flocking and basic zombie decision making
@@ -158,5 +165,12 @@ public class WaveManagement : MonoBehaviour {
         
     }
 
-
+    IEnumerator generationEpoch()
+    {
+        pShooting = player.GetComponentInChildren<PlayerShooting>();
+        pHealth = player.GetComponent<PlayerHealth>();
+        gaC.multipleGenerationEpoch(pShooting, pHealth);
+        gaFinished = true;
+        yield return null;
+    }
 }

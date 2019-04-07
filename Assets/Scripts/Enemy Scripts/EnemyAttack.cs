@@ -7,6 +7,7 @@ public class EnemyAttack : MonoBehaviour {
     public float timeBetweenAttacks = 0.5f;
     public float attackDamage = 10;
     public float range = 0.5f;
+    public bool useMelee = true;
 
     GameObject player;
     PlayerHealth playerHealth;
