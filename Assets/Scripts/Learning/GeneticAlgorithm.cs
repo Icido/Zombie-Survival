@@ -39,7 +39,7 @@ public class GeneticAlgorithm {
         }
     }
 
-    public void updateFitnessScores(PlayerShooting shooting, PlayerHealth health)
+    public void updateFitnessScores()
     {
         fittestGenome = 0;
         bestFitnessScore = 0;
@@ -51,7 +51,7 @@ public class GeneticAlgorithm {
             List<int> attributeValues = decode(genomes[i].bits);
 
             SmartZombie zombie = new SmartZombie(attributeValues);
-            zombie.setTest(shooting, health);
+            
             genomes[i].fitness = zombie.zombieTest();
 
             totalFitnessScore += genomes[i].fitness;
@@ -87,7 +87,7 @@ public class GeneticAlgorithm {
                 //Check if (fitness = 1) || (fitness ~ 0.95 for 10 generations)
                 if (genomes[i].fitness == 1)
                 {
-                    Debug.Log("Perfection!");
+                    //Debug.Log("Perfection!");
                     hasFoundPerfection = true;
                     bestZombie = attributeValues;
                     return;
@@ -193,13 +193,13 @@ public class GeneticAlgorithm {
         }
     }
 
-    public void epoch(PlayerShooting shooting, PlayerHealth health)
+    public void epoch()
     {
         busy = true;
 
         //Debug.Log("New Generation: " + generation + ", Pop size: " + populationSize);
 
-        updateFitnessScores(shooting, health);
+        updateFitnessScores();
 
         if (!hasFoundPerfection)
         {

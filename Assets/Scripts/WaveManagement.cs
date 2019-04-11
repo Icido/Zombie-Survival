@@ -26,14 +26,10 @@ public class WaveManagement : MonoBehaviour {
     private bool finishedRZombieSpawning = false;
 
     private GAController gaC;
-    private GameObject player;
-    private PlayerShooting pShooting;
-    private PlayerHealth pHealth;
 
     // Use this for initialization
     void Start() {
         gaC = GetComponent<GAController>();
-        player = GameObject.Find("Player");
         SmartZombies.Clear();
         RegularZombies.Clear();
     }
@@ -46,12 +42,7 @@ public class WaveManagement : MonoBehaviour {
             finishedSZombieSpawning && finishedRZombieSpawning)
         {
             allDead = true;
-
-            pShooting = player.GetComponentInChildren<PlayerShooting>();
-            pHealth = player.GetComponent<PlayerHealth>();
-
-
-            gaC.multipleGenerationEpoch(pShooting, pHealth);
+            gaC.multipleGenerationEpoch();
             waveNumber++;
         }
 
@@ -75,6 +66,7 @@ public class WaveManagement : MonoBehaviour {
 
         finishedSZombieSpawning = false;
         finishedRZombieSpawning = false;
+
 
         StartCoroutine(spawnZombie(true, numRZombies, SpawnLocations, RTransform));
 
@@ -130,14 +122,14 @@ public class WaveManagement : MonoBehaviour {
                 {
                     //modify attack speed, damage and collider range for MELEE
                     newZombie.GetComponent<EnemyAttack>().attackDamage = gaC.SortedZombies[i].attributes.meleeStrength;
-                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = 1 / gaC.SortedZombies[i].attributes.meleeAttackRate;
+                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = gaC.SortedZombies[i].attributes.meleeSpeed;
                     newZombie.GetComponent<EnemyAttack>().range = gaC.SortedZombies[i].attributes.meleeRange;
                 }
                 else
                 {
                     //modify attack speed, damage and collider range for RANGE
                     newZombie.GetComponent<EnemyAttack>().attackDamage = gaC.SortedZombies[i].attributes.rangeStrength;
-                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = 1 / gaC.SortedZombies[i].attributes.rangeAttackRate;
+                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = gaC.SortedZombies[i].attributes.rangeSpeed;
                     newZombie.GetComponent<EnemyAttack>().range = gaC.SortedZombies[i].attributes.rangeRange;
                 }
 

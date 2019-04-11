@@ -18,7 +18,7 @@ public class GAController : MonoBehaviour {
         ga.createStartPopulation();
     }
 
-    public void multipleGenerationEpoch(PlayerShooting shooting, PlayerHealth health)
+    public void multipleGenerationEpoch()
     {
         if (ga.hasFoundPerfection)
         {
@@ -30,7 +30,7 @@ public class GAController : MonoBehaviour {
 
             for (int i = 0; i < generationalGap; i++)
             {
-                ga.epoch(shooting, health);
+                ga.epoch();
             }
 
             //Sort ga.currentBestZombies by fitness score

@@ -10,7 +10,7 @@ public class SmartZombie {
         inputGenesToZGenes(attributeValues);
         ZGenesToAttributes(zGenes);
 
-        if((attributes.meleeStrength * attributes.meleeAttackRate) < (attributes.rangeStrength * attributes.rangeAttackRate))
+        if((attributes.meleeStrength * attributes.meleeSpeed) < (attributes.rangeStrength * attributes.rangeSpeed))
         {
             useMelee = false;
         }
@@ -30,11 +30,11 @@ public class SmartZombie {
     {
         public float meleeRange; //How close the zombie must be from the player before it can attack with melee
         public float meleeStrength; //How hard the zombie hits with melee
-        public float meleeAttackRate; //How fast the zombie hits with melee (times per second)
+        public float meleeSpeed; //How fast the zombie hits with melee (times per second)
 
         public float rangeRange; //How close the zombie can be from the player before it attack with range
         public float rangeStrength; //How hard the zombie hits with range
-        public float rangeAttackRate; //How fast the zombie hits with range (times per second)
+        public float rangeSpeed; //How fast the zombie hits with range (times per second)
 
         public float speed; //How fast the zombie can run
         public float health; //How much damage the zombie can take
@@ -96,11 +96,11 @@ public class SmartZombie {
     {
         attributes.meleeRange = 0.5f + ((1f * genes.armLength) / maxGeneValue) + ((0.5f * genes.legLength) / maxGeneValue); //0.5-3.5
         attributes.meleeStrength = 2.0f + ((2f * genes.clawLength) / maxGeneValue); //2-6
-        attributes.meleeAttackRate = 0.5f + ((1.25f * (maxGeneValue - genes.armLength)) / maxGeneValue) + ((1f * (maxGeneValue - genes.clawLength)) / maxGeneValue); //0.5-5
+        attributes.meleeSpeed = 0.5f + ((1.25f * (maxGeneValue - genes.armLength)) / maxGeneValue) + ((1f * (maxGeneValue - genes.clawLength)) / maxGeneValue); //0.5-5
 
         attributes.rangeRange = 10f  + ((2.5f * genes.throatLength) / maxGeneValue) + ((1f * genes.acidSize) / maxGeneValue); //10-17
         attributes.rangeStrength = 1.5f + ((2f * genes.acidStrength) / maxGeneValue); //1.5-5.5
-        attributes.rangeAttackRate = 0.5f + ((0.75f * (maxGeneValue - genes.throatLength)) / maxGeneValue) + ((0.5f * (maxGeneValue - genes.acidStrength)) / maxGeneValue); //0.5-3
+        attributes.rangeSpeed = 0.5f + ((0.75f * (maxGeneValue - genes.throatLength)) / maxGeneValue) + ((0.5f * (maxGeneValue - genes.acidStrength)) / maxGeneValue); //0.5-3
 
         attributes.speed = 0.5f + ((1.5f * (maxGeneValue - genes.legLength)) / maxGeneValue) + ((1f * (maxGeneValue - genes.tankiness)) / maxGeneValue); //0.5-5.5
         attributes.health = 50f  + ((5f * (maxGeneValue - genes.acidSize)) / maxGeneValue) + ((12.5f * genes.tankiness) / maxGeneValue) + ((7.5f * (maxGeneValue - genes.pheremoneStrength)) / maxGeneValue); //50-100
@@ -117,21 +117,12 @@ public class SmartZombie {
 
 
 
-    public void setTest(PlayerShooting shooting, PlayerHealth health)
-    {
-        //playerAccuracy = shooting.accuracy;
-        playerDamage = shooting.damagePerShot;
-        //playerRange = shooting.range;
-        playerAttackRate = 1 / shooting.timeBetweenBullets;
-        playerCurrentHealth = health.currentHealth;
-    }
 
-    private float playerAccuracy = 80f;
-    private float playerDamage = 10f;
-    private float playerRange = 25f;
-    private float playerAttackRate = 2f;
-    private float playerCurrentHealth = 100f;
-    private float playerMaxHealth;
+
+    public float playerAccuracy = 80f;
+    public float playerDamage = 10f;
+    public float playerRange = 25f;
+    public float playerMaxHealth = 100f;
     
 
     private float zombieMeleeDamagePerSecond;
@@ -142,13 +133,11 @@ public class SmartZombie {
         double newFitness = 0;
 
         //Calculate how much damage per second from the converted values
-        zombieMeleeDamagePerSecond = attributes.meleeStrength * attributes.meleeAttackRate; //Highest current possible mDPS: 30
-        zombieRangeDamagePerSecond = attributes.rangeStrength * attributes.rangeAttackRate; //Highest current possible rDPS: 16.5
-
-        float playerDamagePerSecond = playerDamage * playerAttackRate;
+        zombieMeleeDamagePerSecond = attributes.meleeStrength * attributes.meleeSpeed; //Highest current possible mDPS: 30
+        zombieRangeDamagePerSecond = attributes.rangeStrength * attributes.rangeSpeed; //Highest current possible rDPS: 16.5
 
         float currentZombieHealth = attributes.health;
-        playerMaxHealth = playerCurrentHealth;
+        float currentPlayerHealth = playerMaxHealth;
 
         float startDistance = Random.Range(10, 30);
 
@@ -168,7 +157,7 @@ public class SmartZombie {
             //Takes damage from player (if the player hits)
             if (Random.Range(0, 100) <= (playerAccuracy - ((attributes.leadershipStrength * attributes.leadershipRange) / 10f)))
             {
-                currentZombieHealth -= playerDamagePerSecond;
+                currentZombieHealth -= playerDamage;
             }
 
             //If the zombie is not dead, deal damage to player (update player damage taken), else BREAK
@@ -182,7 +171,7 @@ public class SmartZombie {
                 {
                     if(startDistance <= attributes.meleeRange)
                     {
-                        playerCurrentHealth -= zombieMeleeDamagePerSecond;
+                        currentPlayerHealth -= zombieMeleeDamagePerSecond;
                     }
                     else
                     {
@@ -194,7 +183,7 @@ public class SmartZombie {
                 {
                     if (startDistance <= attributes.rangeRange)
                     {
-                        playerCurrentHealth -= zombieRangeDamagePerSecond;
+                        currentPlayerHealth -= zombieRangeDamagePerSecond;
                     }
                     else
                     {
@@ -205,7 +194,7 @@ public class SmartZombie {
             }
             
             //Check if player is dead, BREAK
-            if (playerCurrentHealth <= 0)
+            if (currentPlayerHealth <= 0)
             {
                 isPlayerDead = true;
                 break;
@@ -220,12 +209,9 @@ public class SmartZombie {
         }
         else
         {
-            float percentageDamageToPlayer = (playerMaxHealth - playerCurrentHealth) / playerMaxHealth;
+            float percentageDamageToPlayer = (playerMaxHealth - currentPlayerHealth) / playerMaxHealth;
             newFitness = percentageDamageToPlayer;
         }
-
-        if (fitness <= 0)
-            fitness = 0.001f;
 
         fitness = newFitness;
 

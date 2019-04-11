@@ -157,9 +157,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damagePerShot: 20
-  timeBetweenBullets: 0.5
+  timeBetweenBullets: 0.01
   range: 100
-  accuracy: 100
 --- !u!23 &418728810
 MeshRenderer:
   m_ObjectHideFlags: 0
