@@ -122,14 +122,14 @@ public class WaveManagement : MonoBehaviour {
                 {
                     //modify attack speed, damage and collider range for MELEE
                     newZombie.GetComponent<EnemyAttack>().attackDamage = gaC.SortedZombies[i].attributes.meleeStrength;
-                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = gaC.SortedZombies[i].attributes.meleeSpeed;
+                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = 1/ gaC.SortedZombies[i].attributes.meleeAttackRate;
                     newZombie.GetComponent<EnemyAttack>().range = gaC.SortedZombies[i].attributes.meleeRange;
                 }
                 else
                 {
                     //modify attack speed, damage and collider range for RANGE
                     newZombie.GetComponent<EnemyAttack>().attackDamage = gaC.SortedZombies[i].attributes.rangeStrength;
-                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = gaC.SortedZombies[i].attributes.rangeSpeed;
+                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = 1 / gaC.SortedZombies[i].attributes.rangeAttackRate;
                     newZombie.GetComponent<EnemyAttack>().range = gaC.SortedZombies[i].attributes.rangeRange;
                 }
 
