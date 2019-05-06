@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System.Threading;
 
 public class GAController : MonoBehaviour {
 
@@ -14,8 +15,14 @@ public class GAController : MonoBehaviour {
 
     // Use this for initialization
 	void Start () {
+
+
         ga = new GeneticAlgorithm();
         ga.createStartPopulation();
+
+        //ThreadStart start = new ThreadStart(ga.epoch);
+        //Thread gaThread = new Thread(start);
+
     }
 
     public void multipleGenerationEpoch()
