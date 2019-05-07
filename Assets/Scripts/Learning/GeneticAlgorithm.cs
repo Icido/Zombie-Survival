@@ -134,9 +134,12 @@ public class GeneticAlgorithm {
         return value;
     }
 
+    System.Random randomSlice = new System.Random();
+
     public Genomes rouletteWheelSelection()
     {
-        double slice = Random.value * totalFitnessScore;
+        float randomSliceValue = randomSlice.Next(0, 10) / 10f;
+        double slice = randomSliceValue * totalFitnessScore;
         double total = 0;
         int selectedGenome = 0;
 
@@ -159,7 +162,8 @@ public class GeneticAlgorithm {
     {
         for (int i = 0; i < bits.Count; i++)
         {
-            if(Random.value < mutationRate)
+            float randomMutationValue = randomSlice.Next(0, 10) / 10f;
+            if (randomMutationValue < mutationRate)
             {
                 bits[i] = bits[i] == 0 ? 1 : 0;
             }
@@ -168,9 +172,10 @@ public class GeneticAlgorithm {
 
     public void crossover(List<int> mother, List<int> father, List<int> child1, List<int> child2)
     {
+        float randomCrossoverValue = randomSlice.Next(0, 10) / 10f;
 
         //If it's above crossover rate or parents are the same, copy through
-        if(Random.value > crossoverRate || mother == father)
+        if (randomCrossoverValue > crossoverRate || mother == father)
         {
             child1.AddRange(mother);
             child2.AddRange(father);

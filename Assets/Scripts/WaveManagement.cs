@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+
 
 public class WaveManagement : MonoBehaviour {
 
@@ -25,24 +27,46 @@ public class WaveManagement : MonoBehaviour {
     private bool finishedSZombieSpawning = false;
     private bool finishedRZombieSpawning = false;
 
+    private bool newWaveReady = true;
+
     private GAController gaC;
 
+
+
+    private ThreadStart epochThreadStart;
+    private Thread epochThread;
+
+    
+    
+    
     // Use this for initialization
     void Start() {
-        gaC = GetComponent<GAController>();
+        gaC = new GAController();
+        gaC.initialEpoch();
         SmartZombies.Clear();
         RegularZombies.Clear();
+
+        epochThreadStart = new ThreadStart(gaC.epochLoop);
+        epochThread = new Thread(epochThreadStart);
+        epochThread.Start();
+
     }
 
     // Update is called once per frame
     void Update() {
 
+        if(finishedSZombieSpawning && finishedRZombieSpawning && !newWaveReady)
+        {
+            newWaveReady = true;
+            gaC.pauseEpoch(false);
+            Debug.Log("Epoch paused");
+        }
+
         //Check if all current spawned enemies are dead (when dead, they remove themself from the list and delete self
         if (SmartZombies.Count == 0 && RegularZombies.Count == 0 &&
-            finishedSZombieSpawning && finishedRZombieSpawning)
+            newWaveReady)
         {
             allDead = true;
-            gaC.multipleGenerationEpoch();
             waveNumber++;
         }
 
@@ -51,6 +75,12 @@ public class WaveManagement : MonoBehaviour {
         {
             newWave(waveNumber);
             allDead = false;
+        }
+
+        if(Input.GetKeyUp(KeyCode.P))
+        {
+            epochThread.Join();
+            Debug.Break();
         }
     }
 
@@ -66,6 +96,10 @@ public class WaveManagement : MonoBehaviour {
 
         finishedSZombieSpawning = false;
         finishedRZombieSpawning = false;
+
+        newWaveReady = false;
+        gaC.pauseEpoch(true);
+        Debug.Log("Epoch resumed");
 
 
         StartCoroutine(spawnZombie(true, numRZombies, SpawnLocations, RTransform));
@@ -109,28 +143,33 @@ public class WaveManagement : MonoBehaviour {
             for (int i = 0; i < numberOfEnemies; i++)
             {
 
+                if (gaC.SortedZombies.Count <= 0)
+                    continue;
+
                 //Add zombie
                 GameObject newZombie = Instantiate(SmartZombie, spawnLocations.GetChild(Random.Range(0, spawnLocations.childCount)).position, Quaternion.identity, enemyContainer);
 
+                SmartZombie newSmartZombie = gaC.SortedZombies[0];
+
                 //Request generation data
-                newZombie.GetComponent<EnemyHealth>().startingHealth = gaC.SortedZombies[i].attributes.health;
-                newZombie.GetComponent<EnemyHealth>().currentHealth = gaC.SortedZombies[i].attributes.health;
+                newZombie.GetComponent<EnemyHealth>().startingHealth = newSmartZombie.attributes.health;
+                newZombie.GetComponent<EnemyHealth>().currentHealth = newSmartZombie.attributes.health;
 
-                newZombie.GetComponent<EnemyMovement>().speed = gaC.SortedZombies[i].attributes.speed;
+                newZombie.GetComponent<EnemyMovement>().speed = newSmartZombie.attributes.speed;
 
-                if(gaC.SortedZombies[i].useMelee)
+                if(newSmartZombie.useMelee)
                 {
                     //modify attack speed, damage and collider range for MELEE
-                    newZombie.GetComponent<EnemyAttack>().attackDamage = gaC.SortedZombies[i].attributes.meleeStrength;
-                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = 1/ gaC.SortedZombies[i].attributes.meleeAttackRate;
-                    newZombie.GetComponent<EnemyAttack>().range = gaC.SortedZombies[i].attributes.meleeRange;
+                    newZombie.GetComponent<EnemyAttack>().attackDamage = newSmartZombie.attributes.meleeStrength;
+                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = 1/ newSmartZombie.attributes.meleeAttackRate;
+                    newZombie.GetComponent<EnemyAttack>().range = newSmartZombie.attributes.meleeRange;
                 }
                 else
                 {
                     //modify attack speed, damage and collider range for RANGE
-                    newZombie.GetComponent<EnemyAttack>().attackDamage = gaC.SortedZombies[i].attributes.rangeStrength;
-                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = 1 / gaC.SortedZombies[i].attributes.rangeAttackRate;
-                    newZombie.GetComponent<EnemyAttack>().range = gaC.SortedZombies[i].attributes.rangeRange;
+                    newZombie.GetComponent<EnemyAttack>().attackDamage = newSmartZombie.attributes.rangeStrength;
+                    newZombie.GetComponent<EnemyAttack>().timeBetweenAttacks = 1 / newSmartZombie.attributes.rangeAttackRate;
+                    newZombie.GetComponent<EnemyAttack>().range = newSmartZombie.attributes.rangeRange;
                 }
 
                 //TODO: Put in "leadershipStr/Rng" for flocking and basic zombie decision making
@@ -146,8 +185,6 @@ public class WaveManagement : MonoBehaviour {
 
             finishedSZombieSpawning = true;
         }
-
-        
     }
 
 

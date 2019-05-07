@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
 
 public class SmartZombie {
 
@@ -129,8 +130,12 @@ public class SmartZombie {
     private float zombieMeleeDamagePerSecond;
     private float zombieRangeDamagePerSecond;
 
+    System.Random randomDistance = new System.Random();
+    System.Random randomAccuracy = new System.Random();
+
     public double zombieTest()
     {
+
         double newFitness = 0;
 
         //Calculate how much damage per second from the converted values
@@ -142,7 +147,10 @@ public class SmartZombie {
         float currentZombieHealth = attributes.health;
         playerMaxHealth = playerCurrentHealth;
 
-        float startDistance = Random.Range(10, 30);
+
+
+        float startDistance = randomDistance.Next(10, 30);
+        //float startDistance = 20f;
 
         bool isPlayerDead = false;
         bool prefersMelee = (zombieMeleeDamagePerSecond > zombieRangeDamagePerSecond) ? true : false;
@@ -158,13 +166,13 @@ public class SmartZombie {
             }
 
             //Takes damage from player (if the player hits)
-            if (Random.Range(0, 100) <= (playerAccuracy - ((attributes.leadershipStrength * attributes.leadershipRange) / 10f)))
+            if (randomAccuracy.Next(0, 100) <= (playerAccuracy - ((attributes.leadershipStrength * attributes.leadershipRange) / 10f)))
             {
                 currentZombieHealth -= playerDamagePerSecond;
             }
 
             //If the zombie is not dead, deal damage to player (update player damage taken), else BREAK
-            if(currentZombieHealth <= 0)
+            if (currentZombieHealth <= 0)
             {
                 break;
             }
