@@ -43,6 +43,9 @@ public class PlayerShooting : MonoBehaviour {
             // ... disable the effects.
             DisableEffects();
         }
+
+        Debug.Log("Player Still shooting");
+
     }
 
     public void DisableEffects()

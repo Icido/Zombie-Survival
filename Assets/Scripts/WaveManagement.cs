@@ -52,6 +52,8 @@ public class WaveManagement : MonoBehaviour {
             newWave(waveNumber);
             allDead = false;
         }
+
+        Debug.Log("Still going");
     }
 
     void newWave(int waveNumber)
