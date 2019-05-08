@@ -27,8 +27,6 @@ public class PlayerMovement : MonoBehaviour {
         Move(h, v);
 
         Turn();
-
-        Debug.Log("Player Still moving");
 	}
 
     void Move(float h, float v)
