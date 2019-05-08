@@ -24,6 +24,7 @@ public class EnemyMovement : MonoBehaviour {
         if (enemyHealth.currentHealth > 0 && playerHealth.currentHealth > 0)
         {
             //Still alive and move
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, 0.001f);
         }
         else
         {
