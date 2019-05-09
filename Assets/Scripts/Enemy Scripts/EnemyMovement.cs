@@ -7,13 +7,14 @@ public class EnemyMovement : MonoBehaviour {
     Transform player;
     PlayerHealth playerHealth;
     EnemyHealth enemyHealth;
-    public float speed;
+    public float speed = 1f;
 
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         playerHealth = player.GetComponent<PlayerHealth>();
         enemyHealth = GetComponent<EnemyHealth>();
+
     }
 
 
@@ -24,7 +25,7 @@ public class EnemyMovement : MonoBehaviour {
         if (enemyHealth.currentHealth > 0 && playerHealth.currentHealth > 0)
         {
             //Still alive and move
-            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, 0.001f);
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed);
         }
         else
         {
