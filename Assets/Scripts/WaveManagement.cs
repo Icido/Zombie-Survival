@@ -97,8 +97,10 @@ public class WaveManagement : MonoBehaviour {
         {
             for (int i = 0; i < numberOfEnemies; i++)
             {
-                RegularZombies.Add(Instantiate(RegularZombie, spawnLocations.GetChild(Random.Range(0, spawnLocations.childCount)).position, Quaternion.identity, enemyContainer));
-
+                GameObject newZombie = Instantiate(RegularZombie, spawnLocations.GetChild(Random.Range(0, spawnLocations.childCount)).position, Quaternion.identity, enemyContainer);
+                RegularZombies.Add(newZombie);
+                GetComponent<levelController>().agents.Add(newZombie);
+                //Debug.Log("Instantiate Regular " + GetComponent<levelController>().agents.Count);
                 yield return new WaitForSeconds(1);
             }
 
@@ -138,8 +140,8 @@ public class WaveManagement : MonoBehaviour {
 
 
                 //Modify this zombie with generation data
-
                 SmartZombies.Add(newZombie);
+                GetComponent<levelController>().agents.Add(newZombie);
 
                 yield return new WaitForSeconds(5);
             }

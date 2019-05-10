@@ -12,20 +12,20 @@ public class levelController : MonoBehaviour {
 
 	void Start () {
 
-        spawnAgent(agentPrefab, agentCount);
+        //spawnAgent(agentPrefab, agentCount);
 	}
 
-    void spawnAgent(GameObject prefab, int agentsToSpawn)
-    {
-        for (int i = 0; i < agentsToSpawn; i++)
-        {
-            GameObject tempAgent = Instantiate(prefab, new Vector3(Random.Range(-spawnRadius, spawnRadius), //limits the range at which the agents may spawn
-                                            0, Random.Range(-spawnRadius, spawnRadius)), Quaternion.identity);
-            tempAgent.tag = "aiAgent";
+    //void spawnAgent(GameObject prefab, int agentsToSpawn)
+    //{
+    //    for (int i = 0; i < agentsToSpawn; i++)
+    //    {
+    //        GameObject tempAgent = Instantiate(prefab, new Vector3(Random.Range(-spawnRadius, spawnRadius), //limits the range at which the agents may spawn
+    //                                        0, Random.Range(-spawnRadius, spawnRadius)), Quaternion.identity);
+    //        tempAgent.tag = "aiAgent";
 
-            agents.Add(tempAgent);
-        }
-    }
+    //        agents.Add(tempAgent);
+    //    }
+    //}
 
     public List<GameObject> getNeighbours(GameObject agent, float neighbourRadius)
     {

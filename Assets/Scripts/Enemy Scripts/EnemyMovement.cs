@@ -14,7 +14,7 @@ public class EnemyMovement : MonoBehaviour {
 
     float distanceToPlayer;
 
-    float distanceBetween;
+    //float distanceBetween;
     float distanceToNextNode;
     float nextNodeNear = 1f;
     int nodeNumber = 0;
@@ -22,10 +22,13 @@ public class EnemyMovement : MonoBehaviour {
 
     List<Vector3> path = new List<Vector3>();
     Vector3 nextNode = new Vector3();
+    public bool newDestination = false;
+
+    public Vector3 destinationNode = new Vector3();
 
     private float minDistanceToPlayer = 1f;
 
-    private float distanceUntilChase = 10f;
+    //private float distanceUntilChase = 10f;
 
     void Awake()
     {
@@ -38,15 +41,14 @@ public class EnemyMovement : MonoBehaviour {
 
     void Update()
     {
-        //TODO: PATHFINDING
-        distanceBetween = Vector3.Distance(transform.position, player.position);
 
-        if(distanceBetween <= distanceUntilChase)
+        if (newDestination)
         {
-            aStarPathfinding.pathFind(transform.position, player.position);
+            aStarPathfinding.pathFind(transform.position, destinationNode);
+            newDestination = false;
         }
 
-        if(aStarPathfinding.finishedPath)
+        if (aStarPathfinding.finishedPath)
         {
             path = aStarPathfinding.storedPath;
             nodeNumber = 0;
@@ -73,6 +75,7 @@ public class EnemyMovement : MonoBehaviour {
             if(distanceToPlayer < minDistanceToPlayer)
             {
                 nextNode = player.position;
+                newDestination = false;
             }
         }
 

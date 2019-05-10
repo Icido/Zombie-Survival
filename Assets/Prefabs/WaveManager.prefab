@@ -84,6 +84,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agentPrefab: {fileID: 1433910464689182, guid: 6f3d144c7e4690b4db43aaac69d99e8b,
     type: 2}
-  agentCount: 10
+  agentCount: 0
   agents: []
   spawnRadius: 20

@@ -9,7 +9,7 @@ public class flock : MonoBehaviour
     public int neighbourRadius;
 
     public GameObject[] agents;
-    private float playerSpeed = 3f;
+    private float playerSpeed = 1f;
     private levelController lvlScript;
 
     public float alignmentWeight = 1;
@@ -20,6 +20,8 @@ public class flock : MonoBehaviour
     //List<GameObject> currentNeighbours;
     public bool playerFound = false;
     public bool isFlocking = false;
+
+   // private int agentCount = 0;
 
     Vector3 randomVec;
 
@@ -37,10 +39,10 @@ public class flock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         //Flock();
         if (isFlocking)
         {
+            agents = GameObject.FindGameObjectsWithTag("aiAgent");
             Flock();
         }
         else
@@ -53,13 +55,14 @@ public class flock : MonoBehaviour
 
     void Flock()
     {
+
         pos = (alignment() * alignmentWeight) + (cohesion() * cohesionWeight) + (separation() * separationWeight);
         pos.Normalize();
         pos *= playerSpeed;
-        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, pos, playerSpeed * Time.deltaTime * 5, 1));
+        transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, pos, playerSpeed * Time.deltaTime * 5, 0));
         transform.position += pos * playerSpeed * Time.deltaTime;
 
-        Debug.Log(separation());
+        //Debug.Log(lvlScript.agents.Count);
     }
 
     Vector3 alignment()
@@ -161,7 +164,7 @@ public class flock : MonoBehaviour
     {
         List <GameObject> temp = new List<GameObject>();
 
-        foreach (GameObject agent in agents)
+        foreach (GameObject agent in lvlScript.agents)
         {
             if (agent != this.gameObject)
             {

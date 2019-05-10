@@ -44,7 +44,7 @@ public class GAController : MonoBehaviour {
 
 
 
-            Debug.Log("Now at generation: " + ga.generation);
+            //Debug.Log("Now at generation: " + ga.generation);
         }
     }
 }

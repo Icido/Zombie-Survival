@@ -8,7 +8,6 @@ public class StateController : MonoBehaviour
     public State currentState;
     public GameObject currentObj;
     public GameObject Player;
-    public NavMeshAgent navMeshAgent;
     public State stayState;
     public bool canAttack = true;
     public float attackTimer = 5;
@@ -18,7 +17,6 @@ public class StateController : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        navMeshAgent = GetComponent<NavMeshAgent>();
         currentObj = this.gameObject;
         Player = GameObject.FindGameObjectWithTag("Player");
         waveManager = GameObject.Find("WaveManager");

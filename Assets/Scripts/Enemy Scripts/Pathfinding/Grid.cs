@@ -25,7 +25,7 @@ public class Grid : MonoBehaviour {
         gridGen();
         if (grid != null)
         {
-            Debug.Log("Grid Initialised");
+            //Debug.Log("Grid Initialised");
         }
     }
 

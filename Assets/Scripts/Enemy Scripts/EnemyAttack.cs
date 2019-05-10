@@ -14,13 +14,10 @@ public class EnemyAttack : MonoBehaviour {
     bool playerInRange;
     float timer;
 
-    EnemyHatChange hatChanger;
-
     void Awake()
     {
         // Setting up the references.
         player = GameObject.FindGameObjectWithTag("Player");
-        hatChanger = GetComponent<EnemyHatChange>();
 
         playerHealth = player.GetComponent<PlayerHealth>();
         enemyHealth = GetComponent<EnemyHealth>();
@@ -31,12 +28,10 @@ public class EnemyAttack : MonoBehaviour {
         if (Vector3.Distance(player.transform.position, transform.position) <= range)
         {
             playerInRange = true;
-            hatChanger.changeHat(0);
         }
         else
         {
             playerInRange = false;
-            hatChanger.changeHat(2);
         }
 
         //TODO: DECISION MAKING
@@ -62,8 +57,6 @@ public class EnemyAttack : MonoBehaviour {
     {
         // Reset the timer.
         timer = 0f;
-
-        hatChanger.changeHat(1);
 
         // If the player has health to lose...
         if (playerHealth.currentHealth > 0)
