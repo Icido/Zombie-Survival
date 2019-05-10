@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Shootable
   - Wall
+  - Undefined
+  - aiAgent
   layers:
   - Default
   - TransparentFX

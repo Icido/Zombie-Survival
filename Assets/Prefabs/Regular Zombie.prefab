@@ -28,9 +28,10 @@ GameObject:
   - component: {fileID: 114578700000668376}
   - component: {fileID: 114398283461947704}
   - component: {fileID: 114238079872954196}
+  - component: {fileID: 114071638770236452}
   m_Layer: 9
   m_Name: Regular Zombie
-  m_TagString: Untagged
+  m_TagString: aiAgent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -178,6 +179,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
+--- !u!114 &114071638770236452
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1433910464689182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90d20cac2ad84224fb40c0424e78ee14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 1893132915775854, guid: 07ce580c28a113b48a2c9eecf2de5442,
+    type: 2}
+  leader: {fileID: 0}
+  neighbourRadius: 10
+  alignmentWeight: 1
+  cohesionWeight: 1
+  separationWeight: 1
 --- !u!114 &114238079872954196
 MonoBehaviour:
   m_ObjectHideFlags: 1
