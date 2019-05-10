@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6182005c82c76241a150a4971a64ef1, type: 3}
+  m_Name: DumbZombPatrol
+  m_EditorClassIdentifier: 
+  actions:
+  - {fileID: 11400000, guid: 61616d4ef66856e47a15702f04181ba9, type: 2}
+  transitions:
+  - decision: {fileID: 11400000, guid: 384bb3f9159f7d84ca108a3481289cfb, type: 2}
+    trueState: {fileID: 11400000, guid: 41a98deed8c984f439308680f88f5770, type: 2}
+    falseState: {fileID: 11400000}
