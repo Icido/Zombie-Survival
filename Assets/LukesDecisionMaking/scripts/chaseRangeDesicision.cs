@@ -13,13 +13,14 @@ public class chaseRangeDesicision : Descision
 
     private bool inRange(StateController controller)
     {
-        flock currentObjFlock = controller.GetComponent<flock>();
+        flock currentObjFlock = controller.currentObj.GetComponent<flock>();
         bool pFound = false;
         foreach (GameObject a in currentObjFlock.agents)
         {
-            if (a.playerFound == true)
+            if (a.GetComponent<flock>().playerFound == true)
             {
                 pFound = true;
+                controller.currentObj.GetComponent<flock>().isFlocking = false;
                 break;
             }
         }

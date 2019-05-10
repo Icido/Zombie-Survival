@@ -8,7 +8,7 @@ public class flock : MonoBehaviour
     public GameObject leader;
     public int neighbourRadius;
 
-    private GameObject[] agents;
+    public GameObject[] agents;
     private float playerSpeed = 3f;
     private levelController lvlScript;
 
@@ -18,7 +18,8 @@ public class flock : MonoBehaviour
 
     Vector3 pos = Vector3.zero;
     //List<GameObject> currentNeighbours;
-
+    public bool playerFound = false;
+    public bool isFlocking = false;
 
     Vector3 randomVec;
 
@@ -37,7 +38,16 @@ public class flock : MonoBehaviour
     void Update()
     {
 
-        Flock();
+        //Flock();
+        if (isFlocking)
+        {
+            Flock();
+        }
+        else
+        {
+
+        }
+
 
     }
 
