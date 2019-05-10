@@ -13,7 +13,17 @@ public class chaseRangeDesicision : Descision
 
     private bool inRange(StateController controller)
     {
-        if (Vector3.Distance(controller.Player.transform.position, controller.currentObj.transform.position) < 30)
+        flock currentObjFlock = controller.GetComponent<flock>();
+        bool pFound = false;
+        foreach (GameObject a in currentObjFlock.agents)
+        {
+            if (a.playerFound == true)
+            {
+                pFound = true;
+                break;
+            }
+        }
+        if (Vector3.Distance(controller.Player.transform.position, controller.currentObj.transform.position) < 30 || pFound == true) //add: or if zomb in neighborhood = player found
             return true;
         else
             return false;

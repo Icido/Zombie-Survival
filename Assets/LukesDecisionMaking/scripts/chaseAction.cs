@@ -13,6 +13,7 @@ public class chaseAction : Action
     private void chase(StateController controller)
     {
         controller.navMeshAgent.enabled = true;
+        controller.currentObj.GetComponent<flock>().playerFound = true;
         controller.currentObj.GetComponent<Rigidbody>().isKinematic = true;
         controller.navMeshAgent.destination = controller.Player.transform.position;
     }
