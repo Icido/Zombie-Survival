@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu (menuName = "PluggableAi/Decisions/Chase with attack")]
-public class chaseRangeSpecialDecision : Descision
+public class ChaseRangeSpecialDecision : Descision
 {
     public override bool Decide(StateController controller)
     {

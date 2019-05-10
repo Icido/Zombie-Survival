@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu (menuName = "PluggableAi/Decisions/ChaseRange")]
-public class chaseRangeDesicision : Descision
+public class ChaseRangeDesicision : Descision
 {
     public override bool Decide(StateController controller)
     {
@@ -15,9 +15,10 @@ public class chaseRangeDesicision : Descision
     {
         flock currentObjFlock = controller.currentObj.GetComponent<flock>();
         bool pFound = false;
-        foreach (GameObject a in currentObjFlock.agents)
+        List<GameObject> neighbors = controller.waveManager.GetComponent<levelController>().getNeighbours(controller.currentObj, currentObjFlock.neighbourRadius);
+        foreach (GameObject n in neighbors)
         {
-            if (a.GetComponent<flock>().playerFound == true)
+            if (n.GetComponent<flock>().playerFound == true)
             {
                 pFound = true;
                 controller.currentObj.GetComponent<flock>().isFlocking = false;

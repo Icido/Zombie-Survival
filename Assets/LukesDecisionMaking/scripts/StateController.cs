@@ -12,6 +12,7 @@ public class StateController : MonoBehaviour
     public State stayState;
     public bool canAttack = true;
     public float attackTimer = 5;
+    public GameObject waveManager;
 
     public int health = 50;
 	// Use this for initialization
@@ -20,6 +21,7 @@ public class StateController : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
         currentObj = this.gameObject;
         Player = GameObject.FindGameObjectWithTag("Player");
+        waveManager = GameObject.Find("WaveManager");
 	}
 	
 	// Update is called once per frame

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu (menuName = "PluggableAi/Actions/Patrol")]
-public class patrolAction : Action
+public class PatrolAction : Action
 {
     public Transform currentPosition;
     public int x1, x2, z1, z2;
